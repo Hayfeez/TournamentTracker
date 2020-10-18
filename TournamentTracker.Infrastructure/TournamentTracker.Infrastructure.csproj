@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Fixtures\" />
+    <Folder Include="Commands\Players\" />
+    <Folder Include="Commands\Users\" />
+    <Folder Include="Commands\Prizes\" />
+    <Folder Include="Events\" />
+    <Folder Include="Queries\Players\" />
+    <Folder Include="Queries\Prizes\" />
+    <Folder Include="Queries\Fixtures\" />
+    <Folder Include="Queries\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TournamentTracker.Data\TournamentTracker.Data.csproj" />
+  </ItemGroup>
+
+</Project>

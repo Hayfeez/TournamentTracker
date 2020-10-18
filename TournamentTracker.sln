@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTracker.Common", "TournamentTracker.Common\TournamentTracker.Common.csproj", "{D59394B8-91DD-4994-BF2D-0F3E3CE7EC40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTracker.Service", "TournamentTracker.Service\TournamentTracker.Service.csproj", "{1D933822-6C4C-45E1-A854-E23AD74CCABD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTracker.Api", "TournamentTracker.Api\TournamentTracker.Api.csproj", "{4A3DB0BE-BADA-49C8-AD66-4B1F66EA70C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTracker.Data", "TournamentTracker.Data\TournamentTracker.Data.csproj", "{CCF479FA-235E-4E01-B730-30F2FE98E61B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTracker.Infrastructure", "TournamentTracker.Infrastructure\TournamentTracker.Infrastructure.csproj", "{223C11A2-615B-4956-AC14-A1894D1A8EC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D59394B8-91DD-4994-BF2D-0F3E3CE7EC40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D59394B8-91DD-4994-BF2D-0F3E3CE7EC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D59394B8-91DD-4994-BF2D-0F3E3CE7EC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D59394B8-91DD-4994-BF2D-0F3E3CE7EC40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D933822-6C4C-45E1-A854-E23AD74CCABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D933822-6C4C-45E1-A854-E23AD74CCABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D933822-6C4C-45E1-A854-E23AD74CCABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D933822-6C4C-45E1-A854-E23AD74CCABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A3DB0BE-BADA-49C8-AD66-4B1F66EA70C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A3DB0BE-BADA-49C8-AD66-4B1F66EA70C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A3DB0BE-BADA-49C8-AD66-4B1F66EA70C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A3DB0BE-BADA-49C8-AD66-4B1F66EA70C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF479FA-235E-4E01-B730-30F2FE98E61B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF479FA-235E-4E01-B730-30F2FE98E61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF479FA-235E-4E01-B730-30F2FE98E61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF479FA-235E-4E01-B730-30F2FE98E61B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{223C11A2-615B-4956-AC14-A1894D1A8EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{223C11A2-615B-4956-AC14-A1894D1A8EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{223C11A2-615B-4956-AC14-A1894D1A8EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{223C11A2-615B-4956-AC14-A1894D1A8EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8FB8EE1-8B6B-436B-AACC-02AF139D07C2}
+	EndGlobalSection
+EndGlobal
