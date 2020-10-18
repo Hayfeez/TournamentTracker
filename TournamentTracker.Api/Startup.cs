@@ -134,8 +134,8 @@ namespace TournamentTracker.Api
 
 
             app.UseOpenApi();
-           // app.UseSwaggerUi3();
-            app.UseReDoc();
+            app.UseSwaggerUi3();
+            //app.UseReDoc();
 
             app.UseHttpsRedirection();
             app.UseRouting();

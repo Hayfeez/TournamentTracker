@@ -28,7 +28,7 @@ namespace TournamentTracker.Infrastructure.Commands.Accounts
         public class Request : IRequest<Result>
         {
             [JsonIgnore]
-            public Guid UserId { get; set; }
+            public Guid ActionBy { get; set; }
 
 
             [JsonIgnore]
@@ -70,6 +70,13 @@ namespace TournamentTracker.Infrastructure.Commands.Accounts
                 if (item == null)
                 {
                     return new Result(HttpStatusCode.NotFound);
+                }
+
+                if (_readWriteContext.Accounts.Any(x => x.Id != request.Id
+                                                        && (string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)
+                                                        || string.Equals(x.Domain, request.Domain, StringComparison.CurrentCultureIgnoreCase))))
+                {
+                    return new Result("Account name or domain already exists");
                 }
 
                 _mapper.Map(request, item);

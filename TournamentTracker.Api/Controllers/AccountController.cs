@@ -11,6 +11,7 @@ using TournamentTracker.Api.ErrorLogger;
 using TournamentTracker.Api.Filters;
 using TournamentTracker.Infrastructure.Commands;
 using TournamentTracker.Infrastructure.Commands.Accounts;
+using TournamentTracker.Infrastructure.Queries.Accounts;
 using TournamentTracker.Infrastructure.Queries.Teams;
 
 namespace TournamentTracker.Api.Controllers
@@ -47,7 +48,7 @@ namespace TournamentTracker.Api.Controllers
         [ValidateModel]
         public async Task<IActionResult> AddAccount([FromBody] CreateAccount.Request request)
         {
-            request.UserId = UserId.GetValueOrDefault();
+            request.ActionBy = UserId.GetValueOrDefault();
 
             var result = await Mediator.Send(request);
             return Respond(result);
@@ -58,21 +59,22 @@ namespace TournamentTracker.Api.Controllers
         public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccount.Request request, Guid id)
         {
             request.Id = id;
-            request.UserId = UserId.GetValueOrDefault();
+            request.ActionBy = UserId.GetValueOrDefault();
 
             var result = await Mediator.Send(request);
             return Respond(result);
         }
 
-        [HttpDelete("{id}")]
-        [ValidateModel]
-        public async Task<IActionResult> DeleteAccount([FromBody] DeleteCommand.Request request, Guid id)
-        {
-            request.Id = id;
-            request.AccountId = id;
+        //[HttpDelete("{id}")]
+        //[ValidateModel]
+        //public async Task<IActionResult> DeleteAccount([FromBody] DeleteCommand.Request request, Guid id)
+        //{
+        //    request.Id = id;
+        //   request.AccountId = AccountId.GetValueOrDefault();
+        //  request.ActionBy = UserId.GetValueOrDefault();
 
-            var result = await Mediator.Send(request);
-            return Respond(result);
-        }
+        //    var result = await Mediator.Send(request);
+        //    return Respond(result);
+        //}
     }
 }

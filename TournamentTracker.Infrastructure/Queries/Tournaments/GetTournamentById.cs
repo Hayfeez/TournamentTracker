@@ -42,7 +42,6 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
             public bool HighestScoreWins { get; set; }
 
             public List<Team> Teams { get; set; }
-            public List<Prize> Prizes { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result>

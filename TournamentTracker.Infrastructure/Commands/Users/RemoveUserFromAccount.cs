@@ -21,9 +21,9 @@ using TournamentTracker.Common.Helpers;
 using TournamentTracker.Data.Contexts;
 using TournamentTracker.Infrastructure.BasicResults;
 
-namespace TournamentTracker.Infrastructure.Commands.Teams
+namespace TournamentTracker.Infrastructure.Commands.Users
 {
-    public static class UpdateTeam
+    public static class RemoveUserFromAccount
     {
         public class Request : IRequest<Result>
         {
@@ -33,20 +33,20 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
             [JsonIgnore]
             public Guid AccountId { get; set; }
 
-            [JsonIgnore]
-            public Guid Id { get; set; }
-
             [Required]
-            public string Name { get; set; }
+            public Guid UserId { get; set; }
 
-            [Required]
-            public Guid TeamCaptain { get; set; }
         }
 
         public class Result : BasicActionResult
         {
             public Result(string errorMessage) : base(errorMessage)
             {
+            }
+
+            public Result()
+            {
+                Status = HttpStatusCode.OK;
             }
 
             public Result(HttpStatusCode status) : base(status)
@@ -67,22 +67,18 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
 
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
-                var item = _readWriteContext.Teams.SingleOrDefault(x => x.Id == request.Id && x.AccountId == request.AccountId && !x.IsDeleted);
+                var item = _readWriteContext.UserAccounts.SingleOrDefault(x => x.AccountId == request.AccountId
+                                                                              && x.UserId == request.UserId);
+
                 if (item == null)
                 {
                     return new Result(HttpStatusCode.NotFound);
                 }
 
-                if (_readWriteContext.Teams.Any(x => x.Id != request.Id
-                                                     && x.AccountId == request.AccountId
-                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    return new Result("Team name already exists");
-                }
+                item.IsDeleted = true;
+                item.DeletedOn = DateTime.Now;
 
-                _mapper.Map(request, item);
-
-                return await _readWriteContext.SaveChangesAsync() > 0 ? new Result(HttpStatusCode.NoContent) : new Result(HttpStatusCode.BadRequest);
+                return await _readWriteContext.SaveChangesAsync() > 0 ? new Result() : new Result(HttpStatusCode.BadRequest);
             }
         }
     }

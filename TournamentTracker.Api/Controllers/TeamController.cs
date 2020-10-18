@@ -52,7 +52,7 @@ namespace TournamentTracker.Api.Controllers
         public async Task<IActionResult> AddTeam([FromBody] CreateTeam.Request request)
         {
             request.AccountId = AccountId.GetValueOrDefault();
-            request.UserId = UserId.GetValueOrDefault();
+            request.ActionBy = UserId.GetValueOrDefault();
 
             var result = await Mediator.Send(request);
             return Respond(result);
@@ -64,7 +64,7 @@ namespace TournamentTracker.Api.Controllers
         {
             request.Id = id;
             request.AccountId = AccountId.GetValueOrDefault();
-            request.UserId = UserId.GetValueOrDefault();
+            request.ActionBy = UserId.GetValueOrDefault();
 
             var result = await Mediator.Send(request);
             return Respond(result);
@@ -76,6 +76,7 @@ namespace TournamentTracker.Api.Controllers
         {
             request.Id = id;
             request.AccountId = AccountId.GetValueOrDefault();
+            request.ActionBy = UserId.GetValueOrDefault();
 
             var result = await Mediator.Send(request);
             return Respond(result);

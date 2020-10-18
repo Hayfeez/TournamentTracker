@@ -26,8 +26,6 @@ namespace TournamentTracker.Data.Contexts
 
         public DbSet<Player> Players { get; set; }
 
-        public DbSet<Prize> Prizes { get; set; }
-
         public DbSet<Team> Teams { get; set; }
 
         public DbSet<TeamPlayer> TeamPlayers { get; set; }
@@ -55,7 +53,6 @@ namespace TournamentTracker.Data.Contexts
             modelBuilder.Entity<Fixture>().ToTable("Fixture");
             modelBuilder.Entity<FixtureEntry>().ToTable("FixtureEntry");
             modelBuilder.Entity<Player>().ToTable("Player");
-            modelBuilder.Entity<Prize>().ToTable("Prize");
             modelBuilder.Entity<Team>().ToTable("Team");
             modelBuilder.Entity<TeamPlayer>().ToTable("TeamPlayer");
             modelBuilder.Entity<Tournament>().ToTable("Tournament");

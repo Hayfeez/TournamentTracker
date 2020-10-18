@@ -3,27 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
-using System.Text;
-
-using TournamentTracker.Data.Models;
-using MediatR;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 using Newtonsoft.Json;
 
 using TournamentTracker.Common.Helpers;
 using TournamentTracker.Data.Contexts;
+using TournamentTracker.Data.Models;
 using TournamentTracker.Infrastructure.BasicResults;
 
-namespace TournamentTracker.Infrastructure.Commands.Teams
+namespace TournamentTracker.Infrastructure.Commands.Users
 {
-    public static class UpdateTeam
+    public static class AssignUsersToAccount
     {
         public class Request : IRequest<Result>
         {
@@ -33,20 +29,21 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
             [JsonIgnore]
             public Guid AccountId { get; set; }
 
-            [JsonIgnore]
-            public Guid Id { get; set; }
 
             [Required]
-            public string Name { get; set; }
+            public List<Guid> UserIds { get; set; }
 
-            [Required]
-            public Guid TeamCaptain { get; set; }
         }
 
         public class Result : BasicActionResult
         {
             public Result(string errorMessage) : base(errorMessage)
             {
+            }
+
+            public Result()
+            {
+                Status = HttpStatusCode.OK;
             }
 
             public Result(HttpStatusCode status) : base(status)
@@ -67,22 +64,22 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
 
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
-                var item = _readWriteContext.Teams.SingleOrDefault(x => x.Id == request.Id && x.AccountId == request.AccountId && !x.IsDeleted);
-                if (item == null)
+                foreach (var userId in request.UserIds)
                 {
-                    return new Result(HttpStatusCode.NotFound);
+                    if (_readWriteContext.UserAccounts.Any(x => x.AccountId == request.AccountId
+                                                               && x.UserId == userId))
+                    {
+                        continue;
+                    }
+
+                    var toAdd = _mapper.Map<UserAccount>(request);
+                    toAdd.Id = SequentialGuid.Create();
+                    toAdd.UserId = userId;
+                   
+                    _readWriteContext.UserAccounts.Add(toAdd);
                 }
 
-                if (_readWriteContext.Teams.Any(x => x.Id != request.Id
-                                                     && x.AccountId == request.AccountId
-                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    return new Result("Team name already exists");
-                }
-
-                _mapper.Map(request, item);
-
-                return await _readWriteContext.SaveChangesAsync() > 0 ? new Result(HttpStatusCode.NoContent) : new Result(HttpStatusCode.BadRequest);
+                return await _readWriteContext.SaveChangesAsync() > 0 ? new Result() : new Result(HttpStatusCode.BadRequest);
             }
         }
     }

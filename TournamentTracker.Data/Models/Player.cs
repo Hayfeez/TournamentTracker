@@ -10,7 +10,7 @@ namespace TournamentTracker.Data.Models
         public Guid AccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
+        public string PlayerNo { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOn { get; set; }
 

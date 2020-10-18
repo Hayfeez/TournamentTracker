@@ -28,7 +28,7 @@ namespace TournamentTracker.Infrastructure.Commands.Tournaments
         public class Request : IRequest<Result>
         {
             [JsonIgnore]
-            public Guid UserId { get; set; }
+            public Guid ActionBy { get; set; }
 
             [JsonIgnore]
             public Guid AccountId { get; set; }
@@ -72,6 +72,14 @@ namespace TournamentTracker.Infrastructure.Commands.Tournaments
                 if (item == null)
                 {
                     return new Result(HttpStatusCode.NotFound);
+                }
+
+
+                if (_readWriteContext.Tournaments.Any(x => x.Id != request.Id 
+                                                           && x.AccountId == request.AccountId
+                                                           && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    return new Result("Tournament name already exists");
                 }
 
                 _mapper.Map(request, item);

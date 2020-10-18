@@ -6,14 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Commands\Fixtures\" />
-    <Folder Include="Commands\Players\" />
-    <Folder Include="Commands\Users\" />
     <Folder Include="Commands\Prizes\" />
     <Folder Include="Events\" />
-    <Folder Include="Queries\Players\" />
     <Folder Include="Queries\Prizes\" />
     <Folder Include="Queries\Fixtures\" />
-    <Folder Include="Queries\Users\" />
   </ItemGroup>
 
   <ItemGroup>

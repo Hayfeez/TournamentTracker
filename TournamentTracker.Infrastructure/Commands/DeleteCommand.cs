@@ -29,6 +29,9 @@ namespace TournamentTracker.Infrastructure.Commands
         public class Request : IRequest<Result>
         {
             [JsonIgnore]
+            public Guid ActionBy { get; set; }
+
+            [JsonIgnore]
             public Guid AccountId { get; set; }
 
             [JsonIgnore]
@@ -71,6 +74,7 @@ namespace TournamentTracker.Infrastructure.Commands
                 }
 
                 item.IsDeleted = true;
+                item.DeletedOn = DateTime.Now;
 
                 return await _readWriteContext.SaveChangesAsync() > 0 ? new Result(HttpStatusCode.NoContent) : new Result(HttpStatusCode.BadRequest);
             }

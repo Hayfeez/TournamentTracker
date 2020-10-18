@@ -28,7 +28,7 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
         public class Request : IRequest<Result>
         {
             [JsonIgnore]
-            public Guid UserId { get; set; }
+            public Guid ActionBy { get; set; }
 
             [JsonIgnore]
             public Guid AccountId { get; set; }
@@ -73,6 +73,12 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
 
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
+                if (_readWriteContext.Teams.Any(x => x.AccountId == request.AccountId 
+                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    return new Result("Team name already exists");
+                }
+
                 var toAdd = _mapper.Map<Team>(request);
                 toAdd.Id = SequentialGuid.Create();
                 _readWriteContext.Teams.Add(toAdd);

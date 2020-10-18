@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using TournamentTracker.Data.Models;
-using MediatR;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +15,18 @@ using Newtonsoft.Json;
 
 using TournamentTracker.Data.Contexts;
 
-namespace TournamentTracker.Infrastructure.Queries.Tournaments
+namespace TournamentTracker.Infrastructure.Queries.Players
 {
-    public static class GetTournaments
+    public static class GetPlayersTeams
     {
         public class Query : IRequest<Result>
         {
             [JsonIgnore]
+            public Guid UserId { get; set; }
+            [JsonIgnore]
             public Guid AccountId { get; set; }
+
+            public Guid PlayerId { get; set; }
         }
 
         public class Result : List<Model>
@@ -37,12 +39,11 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
         public class Model
         {
             public Guid Id { get; set; }
-            public int TeamsPerMatch { get; set; }
-            public string Name { get; set; }
-            public decimal EntryFee { get; set; }
-            public bool HighestScoreWins { get; set; }
+            public Guid AccountId { get; set; }
+            public Guid PlayerId { get; set; }
+            public string TeamName { get; set; }
+            public DateTime CreatedOn { get; set; }
 
-            public List<Team> Teams { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result>
@@ -58,12 +59,20 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
 
             public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var tournaments = await _readContext.Tournaments
-                    .Where(x => x.AccountId == request.AccountId && !x.IsDeleted)
+                var items = await _readContext.TeamPlayers
+                    .Where(x => x.AccountId == request.AccountId && x.PlayerId == request.PlayerId && !x.IsDeleted)
+                    .Join(_readContext.Teams, teamPlayer => teamPlayer.AccountId, team => team.Id, (teamPlayer, team) => new
+                    {
+                        teamPlayer.PlayerId,
+                        teamPlayer.Id,
+                        teamPlayer.AccountId,
+                        TeamName = team.Name,
+                        teamPlayer.CreatedOn
+                    })
                     .ProjectTo<Model>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken: cancellationToken);
 
-                return new Result(tournaments);
+                return new Result(items);
             }
         }
     }

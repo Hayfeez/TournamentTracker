@@ -1,40 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
-using System.Text;
-
-using TournamentTracker.Data.Models;
-using MediatR;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 using Newtonsoft.Json;
 
 using TournamentTracker.Common.Helpers;
 using TournamentTracker.Data.Contexts;
+using TournamentTracker.Data.Models;
 using TournamentTracker.Infrastructure.BasicResults;
 
-namespace TournamentTracker.Infrastructure.Commands.Accounts
+namespace TournamentTracker.Infrastructure.Commands.Players
 {
-    public static class CreateAccount
+    public static class CreatePlayer
     {
         public class Request : IRequest<Result>
         {
             [JsonIgnore]
             public Guid ActionBy { get; set; }
 
-            [Required]
-            public string Name { get; set; }
+            [JsonIgnore]
+            public Guid AccountId { get; set; }
 
             [Required]
-            public string Domain { get; set; }
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
+
+            [Required]
+            public string PlayerNo { get; set; }
+
+            public Guid? TeamId { get; set; }
 
         }
 
@@ -70,15 +73,25 @@ namespace TournamentTracker.Infrastructure.Commands.Accounts
 
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
-                if (_readWriteContext.Accounts.Any(x => string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)
-                                                        || string.Equals(x.Domain, request.Domain, StringComparison.CurrentCultureIgnoreCase)))
+                if (_readWriteContext.Players.Any(x => x.AccountId == request.AccountId 
+                                                     && string.Equals(x.PlayerNo, request.PlayerNo, StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    return new Result("Account name or domain already exists");
+                    return new Result("Player with this number already exists");
                 }
 
-                var toAdd = _mapper.Map<Account>(request);
+                var toAdd = _mapper.Map<Player>(request);
                 toAdd.Id = SequentialGuid.Create();
-                _readWriteContext.Accounts.Add(toAdd);
+                _readWriteContext.Players.Add(toAdd);
+
+                if (request.TeamId.HasValue)
+                {
+                    var teamPlayer = _mapper.Map<TeamPlayer>(request);
+                    teamPlayer.Id = SequentialGuid.Create();
+                    teamPlayer.TeamId = request.TeamId.Value;
+                    teamPlayer.PlayerId = toAdd.Id;
+
+                    _readWriteContext.TeamPlayers.Add(teamPlayer);
+                }
 
                 return await _readWriteContext.SaveChangesAsync() > 0 ? new Result(toAdd.Id) : new Result(HttpStatusCode.BadRequest);
             }

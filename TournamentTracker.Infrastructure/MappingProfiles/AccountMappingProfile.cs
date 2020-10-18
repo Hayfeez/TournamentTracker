@@ -7,6 +7,8 @@ using AutoMapper;
 using JetBrains.Annotations;
 
 using TournamentTracker.Data.Models;
+using TournamentTracker.Infrastructure.Commands.Accounts;
+
 namespace TournamentTracker.Infrastructure.MappingProfiles
 {
     [UsedImplicitly]
@@ -14,6 +16,10 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
     {
         public AccountMappingProfile()
         {
+            CreateMap<CreateAccount.Request, Account>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<UpdateAccount.Request, Team>(MemberList.Source);
         }
 
     }
