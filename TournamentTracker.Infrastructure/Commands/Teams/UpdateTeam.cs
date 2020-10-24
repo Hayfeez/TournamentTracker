@@ -39,8 +39,6 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
             [Required]
             public string Name { get; set; }
 
-            [Required]
-            public Guid TeamCaptain { get; set; }
         }
 
         public class Result : BasicActionResult
@@ -75,7 +73,7 @@ namespace TournamentTracker.Infrastructure.Commands.Teams
 
                 if (_readWriteContext.Teams.Any(x => x.Id != request.Id
                                                      && x.AccountId == request.AccountId
-                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.Name.ToLower() == request.Name.ToLower()))
                 {
                     return new Result("Team name already exists");
                 }

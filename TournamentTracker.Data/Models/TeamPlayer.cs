@@ -11,6 +11,8 @@ namespace TournamentTracker.Data.Models
         public Guid AccountId { get; set; }
         public Guid TeamId { get; set; }
         public Guid PlayerId { get; set; }
+
+        public bool IsCaptain { get; set; } = false;
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOn { get; set; }
         public DateTime? CreatedOn { get; set; }

@@ -71,7 +71,7 @@ namespace TournamentTracker.Infrastructure.Commands.Users
                 }
 
                 if (_readWriteContext.Users.Any(x => x.Id != request.Id
-                                                     && string.Equals(x.Email, request.Email, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.Email.ToLower() == request.Email.ToLower()))
                 {
                     return new Result("Email address is in use");
                 }

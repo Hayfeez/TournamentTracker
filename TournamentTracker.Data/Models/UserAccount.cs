@@ -13,6 +13,7 @@ namespace TournamentTracker.Data.Models
 
         public Guid UserId { get; set; }
 
+        public bool IsPending { get; set; }
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }

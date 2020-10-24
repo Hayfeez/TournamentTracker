@@ -55,7 +55,7 @@ namespace TournamentTracker.Infrastructure.Queries.Users
                 var item = await _readContext.Users
                     .Where(x => x.Id == request.Id)
                     .ProjectTo<Model>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+                    .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
                 return new Result(item); //_mapper.Map<Result>(item);
             }

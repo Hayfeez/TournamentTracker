@@ -51,7 +51,7 @@ namespace TournamentTracker.Infrastructure.Queries.Groups
 
             public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var items = await _readContext.Teams
+                var items = await _readContext.Groups
                     .Where(x => x.AccountId == request.AccountId && !x.IsDeleted)
                     .ProjectTo<Model>(_mapper.ConfigurationProvider)
                    .ToListAsync(cancellationToken: cancellationToken);

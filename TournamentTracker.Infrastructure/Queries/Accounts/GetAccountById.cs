@@ -27,7 +27,6 @@ namespace TournamentTracker.Infrastructure.Queries.Accounts
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
-            public string Domain { get; set; }
             public DateTime CreatedOn { get; set; }
         }
 
@@ -48,7 +47,6 @@ namespace TournamentTracker.Infrastructure.Queries.Accounts
                     .Where(x =>  x.Id == request.Id && !x.IsDeleted)
                     .Select(x => new Result
                     {
-                        Domain = x.Domain,
                         CreatedOn = x.CreatedOn.Value,
                         Name = x.Name,
                         Id = x.Id

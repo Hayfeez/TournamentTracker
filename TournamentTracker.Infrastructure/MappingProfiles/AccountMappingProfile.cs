@@ -18,11 +18,12 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
         public AccountMappingProfile()
         {
             CreateMap<CreateAccount.Request, Account>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedOn,  opt=>opt.MapFrom(x=> DateTime.Now));
 
-            CreateMap<UpdateAccount.Request, Team>(MemberList.Source);
+            CreateMap<UpdateAccount.Request, Account>(MemberList.Source)
+                .ForMember(dest => dest.ModifiedOn, opt => opt.MapFrom(x => DateTime.Now));
 
-            CreateMap<Account, GetUserAccountById.Model>();
         }
 
     }

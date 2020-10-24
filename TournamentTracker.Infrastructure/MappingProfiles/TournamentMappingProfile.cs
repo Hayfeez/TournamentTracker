@@ -18,9 +18,11 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
         public TournamentMappingProfile()
         {
             CreateMap<CreateTournament.Request, Tournament>()
-                .ForMember(dest=>dest.Id, opt=>opt.Ignore());
+                .ForMember(dest=>dest.Id, opt=>opt.Ignore())
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(x => DateTime.Now));
 
-            CreateMap<UpdateTournament.Request, Tournament>(MemberList.Source);
+            CreateMap<UpdateTournament.Request, Tournament>(MemberList.Source)
+                .ForMember(dest => dest.ModifiedOn, opt => opt.MapFrom(x => DateTime.Now));
 
             CreateMap<Tournament, GetTournaments.Model>();
             CreateMap<Tournament, GetTournamentById.Model>();

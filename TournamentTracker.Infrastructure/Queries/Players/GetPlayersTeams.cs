@@ -39,6 +39,7 @@ namespace TournamentTracker.Infrastructure.Queries.Players
             public Guid AccountId { get; set; }
             public Guid PlayerId { get; set; }
             public string TeamName { get; set; }
+            public bool IsCaptain { get; set; }
             public DateTime CreatedOn { get; set; }
 
         }
@@ -58,16 +59,17 @@ namespace TournamentTracker.Infrastructure.Queries.Players
             {
                 var items = await _readContext.TeamPlayers
                     .Where(x => x.AccountId == request.AccountId && x.PlayerId == request.PlayerId && !x.IsDeleted)
-                    .Join(_readContext.Teams, teamPlayer => teamPlayer.AccountId, team => team.Id, (teamPlayer, team) => new
+                    .Join(_readContext.Teams, teamPlayer => teamPlayer.AccountId, team => team.Id, (teamPlayer, team) => new Model
                     {
-                        teamPlayer.PlayerId,
-                        teamPlayer.Id,
-                        teamPlayer.AccountId,
+                        PlayerId = teamPlayer.PlayerId,
+                        Id = teamPlayer.Id,
+                        IsCaptain = teamPlayer.IsCaptain,
+                        AccountId = teamPlayer.AccountId,
                         TeamName = team.Name,
-                        teamPlayer.CreatedOn
+                        CreatedOn = teamPlayer.CreatedOn.GetValueOrDefault()
                     })
-                    .ProjectTo<Model>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken: cancellationToken);
+
 
                 return new Result(items);
             }

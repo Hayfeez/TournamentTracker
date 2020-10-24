@@ -16,11 +16,12 @@ using TournamentTracker.Data.Contexts;
 
 namespace TournamentTracker.Infrastructure.Queries.Users
 {
-    public static class GetUserAccountById
+    public static class GetUserAccount
     {
         public class Query : IRequest<Result>
         {
-            public Guid Id { get; set; }
+            public Guid AccountId { get; set; }
+            public Guid UserId { get; set; }
         }
 
         public class Result : Model
@@ -33,17 +34,20 @@ namespace TournamentTracker.Infrastructure.Queries.Users
         public class Model
         {
             public Guid Id { get; set; }
+
             public Guid AccountId { get; set; }
+
             public Guid UserId { get; set; }
-            public string AccountName { get; set; }
-            public string Domain { get; set; }
-            public DateTime CreatedOn { get; set; }
+
+            public bool IsPending { get; set; }
+            public bool IsDeleted { get; set; }
+
         }
 
         public class Handler : IRequestHandler<Query, Result>
         {
-            private readonly IMapper _mapper;
             private readonly TournamentTrackerReadContext _readContext;
+            private readonly IMapper _mapper;
 
             public Handler(TournamentTrackerReadContext readContext, IMapper mapper)
             {
@@ -53,12 +57,12 @@ namespace TournamentTracker.Infrastructure.Queries.Users
 
             public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var item = await _readContext.Accounts
-                    .Where(x => x.Id == request.Id && !x.IsDeleted)
+                var item = await _readContext.UserAccounts
+                    .Where(x => x.AccountId == request.AccountId && x.UserId == request.UserId && !x.IsDeleted)
                     .ProjectTo<Model>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+                    .FirstOrDefaultAsync(cancellationToken);
 
-                return new Result(item); //_mapper.Map<Result>(item);
+                return new Result(item);
             }
         }
     }

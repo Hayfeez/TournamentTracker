@@ -75,7 +75,7 @@ namespace TournamentTracker.Infrastructure.Commands.Users
 
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
-                var user = _readWriteContext.Users.SingleOrDefault(x => string.Equals(x.Email, request.Email, StringComparison.CurrentCultureIgnoreCase));
+                var user = _readWriteContext.Users.SingleOrDefault(x => x.Email.ToLower() == request.Email);
                 if (user == null) // user doesn't exist
                 {
                     var toAdd = _mapper.Map<User>(request);
@@ -86,8 +86,8 @@ namespace TournamentTracker.Infrastructure.Commands.Users
                 }
                 else
                 {
-                    if (!(string.Equals(user.FirstName, request.FirstName, StringComparison.CurrentCultureIgnoreCase)
-                          && string.Equals(user.LastName, request.LastName, StringComparison.CurrentCultureIgnoreCase)))
+                    if (!(user.FirstName.ToLower() == request.FirstName.ToLower()
+                          && user.LastName.ToLower() == request.LastName.ToLower()))
                     {
                         return new Result("Email address is in use");
                     }

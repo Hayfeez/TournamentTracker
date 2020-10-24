@@ -67,7 +67,7 @@ namespace TournamentTracker.Infrastructure.Commands.Groups
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
                 if (_readWriteContext.Groups.Any(x => x.AccountId == request.AccountId 
-                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.Name.ToLower() == request.Name.ToLower()))
                 {
                     return new Result("Group already exists");
                 }

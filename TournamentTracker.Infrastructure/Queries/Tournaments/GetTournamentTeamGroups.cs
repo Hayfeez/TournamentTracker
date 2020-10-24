@@ -61,7 +61,7 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
             {
                 var list = await _readContext.TeamGroups
                     .Where(x => x.AccountId == request.AccountId && x.TournamentId == request.TournamentId)
-                    .Join(_readContext.TournamentGroups, teamGroup=>teamGroup.TournamentGroupId, group=>group.Id, (teamGroup, group)=> new
+                    .Join(_readContext.TournamentGroups, teamGroup => teamGroup.TournamentGroupId, group => group.Id, (teamGroup, group) => new
                     {
                         teamGroup.TournamentTeamId,
                         teamGroup.Id,
@@ -81,14 +81,13 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
                         teamGroup.Id,
                         team.TeamId
                     })
-                    .Join(_readContext.Teams, teamGroup => teamGroup.TeamId, team => team.Id, (teamGroup, team) => new
+                    .Join(_readContext.Teams, teamGroup => teamGroup.TeamId, team => team.Id, (teamGroup, team) => new Model
                     {
-                        teamGroup.Id,
-                        teamGroup.TournamentId,
+                        Id = teamGroup.Id,
+                        TournamentId = teamGroup.TournamentId,
                         TeamName = team.Name,
-                        teamGroup.GroupName
+                        GroupName = teamGroup.GroupName
                     })
-                    .ProjectTo<Model>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken: cancellationToken);
 
                 return new Result(list);

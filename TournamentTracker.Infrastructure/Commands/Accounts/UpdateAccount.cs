@@ -37,9 +37,6 @@ namespace TournamentTracker.Infrastructure.Commands.Accounts
             [Required]
             public string Name { get; set; }
 
-            [Required]
-            public string Domain { get; set; }
-
         }
 
         public class Result : BasicActionResult
@@ -73,10 +70,9 @@ namespace TournamentTracker.Infrastructure.Commands.Accounts
                 }
 
                 if (_readWriteContext.Accounts.Any(x => x.Id != request.Id
-                                                        && (string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)
-                                                        || string.Equals(x.Domain, request.Domain, StringComparison.CurrentCultureIgnoreCase))))
+                                                        && x.Name.ToLower() == request.Name.ToLower()))
                 {
-                    return new Result("Account name or domain already exists");
+                    return new Result("Account name already exists");
                 }
 
                 _mapper.Map(request, item);

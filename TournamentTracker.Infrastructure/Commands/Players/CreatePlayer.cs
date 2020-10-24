@@ -74,7 +74,7 @@ namespace TournamentTracker.Infrastructure.Commands.Players
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
                 if (_readWriteContext.Players.Any(x => x.AccountId == request.AccountId 
-                                                     && string.Equals(x.PlayerNo, request.PlayerNo, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.PlayerNo.ToLower() == request.PlayerNo.ToLower()))
                 {
                     return new Result("Player with this number already exists");
                 }

@@ -18,9 +18,11 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
         public GroupMappingProfile()
         {
             CreateMap<CreateGroup.Request, Group>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(x => DateTime.Now));
 
-            CreateMap<UpdateGroup.Request, Group>(MemberList.Source);
+            CreateMap<UpdateGroup.Request, Group>(MemberList.Source)
+                .ForMember(dest => dest.ModifiedOn, opt => opt.MapFrom(x => DateTime.Now));
 
             CreateMap<Group, GetGroups.Model>();
 

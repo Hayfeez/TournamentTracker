@@ -25,16 +25,16 @@ using TournamentTracker.Common.Attributes;
 
 namespace TournamentTracker.Api.Middleware
 {
-    public class AddRequiredHeaderParameter : IOperationProcessor
+    public class AddRequiredHeaderParameterOperationProcessor : IOperationProcessor
     {
         private string AccountId { get; set; }
 
         private string LoginId { get; set; }
 
-        public AddRequiredHeaderParameter(IConfiguration appSettings)
+        public AddRequiredHeaderParameterOperationProcessor(IConfiguration appSettings)
         {
-            AccountId = "account id";
-            LoginId = "login id";
+            AccountId = appSettings["AccountId"].ToString();
+            LoginId = appSettings["LoginId"].ToString(); 
         }
         public bool Process(OperationProcessorContext context)
         {
@@ -64,103 +64,52 @@ namespace TournamentTracker.Api.Middleware
         }
     }
 
-    public class JsonIgnoreDocumentProcessor : IDocumentProcessor
+    public class AddRequiredHeaderParameterDocumentProcessor : IDocumentProcessor
     {
+        private string AccountId { get; set; }
+
+        private string LoginId { get; set; }
+
+        public AddRequiredHeaderParameterDocumentProcessor(IConfiguration appSettings)
+        {
+            AccountId = appSettings["AccountId"].ToString();
+            LoginId = appSettings["LoginId"].ToString();
+        }
+
         public void Process(DocumentProcessorContext context)
         {
             var operations = context.Document.Operations.ToList();
             foreach (var op in operations)
             {
                 var operation = op.Operation;
-                var paramProperties  = operation.Parameters
-                    .Select(p => p.Properties).ToList();
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "LoginId",
+                    IsRequired = true,
+                    Default = LoginId,
+                    Kind = OpenApiParameterKind.Header,
+                    Type = JsonObjectType.String,
+                    Description = "Login Id"
 
-                       // .Where(prop => prop..GetCustomAttribute<JsonIgnoreAttribute>() != null);
+                });
 
-                //operation.Parameters.Add(new OpenApiParameter
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "AccountId",
+                    IsRequired = false,
+                    Default = AccountId,
+                    Kind = OpenApiParameterKind.Header,
+                    Type = JsonObjectType.String,
+                    Description = "Account Id"
+
+                });
+
+                //foreach (var pa in operation.Parameters)
                 //{
-                //    Name = "Authorization",
-                //    IsRequired = true,
-                //    Default = LoginId,
-                //    Kind = OpenApiParameterKind.Header,
-                //    Type = JsonObjectType.String,
-                //    Description = "Access Token"
-
-                //});
+                //    pa.Name = Regex.Replace(pa.Name, @"^\w*\.", "");
+                //}
             }
         }
     }
 
-    public class DefaultDocumentProcessor : IDocumentProcessor
-    {
-        private string AccountId { get; set; }
-
-        private string LoginId { get; set; }
-
-        public DefaultDocumentProcessor(IConfiguration appSettings)
-        {
-            AccountId = "account id";
-            LoginId = "login id";
-        }
-
-        public void Process(DocumentProcessorContext context)
-        {
-            var operations = context.Document.Operations.ToList();
-            foreach (var op in operations)
-            {
-                var operation = op.Operation;
-                operation.Parameters.Add(new OpenApiParameter
-                {
-                    Name = "Authorization",
-                    IsRequired = true,
-                    Default = LoginId,
-                    Kind = OpenApiParameterKind.Header,
-                    Type = JsonObjectType.String,
-                    Description = "Access Token"
-
-                });
-
-                operation.Parameters.Add(new OpenApiParameter
-                {
-                    Name = "AccountId",
-                    IsRequired = false,
-                    Default = AccountId,
-                    Kind = OpenApiParameterKind.Header,
-                    Type = JsonObjectType.String,
-                    Description = "Account Id"
-
-                });
-
-                foreach (var pa in operation.Parameters)
-                {
-                    pa.Name = Regex.Replace(pa.Name, @"^\w*\.", "");
-                }
-            }
-        }
-    }
-
-    public class JsonIgnoreProcessor : IOperationProcessor
-    {
-        public bool Process(OperationProcessorContext context)
-        {
-            var ignoredProperties = context.MethodInfo.GetParameters()
-                .SelectMany(p => p.ParameterType.GetProperties()
-                    .Where(prop => prop.GetCustomAttribute<JsonIgnoreAttribute>() != null));
-
-            if (ignoredProperties.Any())
-            {
-                foreach (var property in ignoredProperties)
-                {
-                    var param = context.OperationDescription.Operation.Parameters.SingleOrDefault(p => p.Name.Equals(property.Name, StringComparison.InvariantCulture));
-                    if (param != null)
-                    {
-                        context.OperationDescription.Operation.Parameters.Remove(param);
-                    }
-                   
-                }
-            }
-
-            return true;
-        }
-    }
 }

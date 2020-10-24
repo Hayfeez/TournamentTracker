@@ -37,7 +37,6 @@ namespace TournamentTracker.Infrastructure.Queries.Users
             public Guid AccountId { get; set; }
             public Guid UserId { get; set; }
             public string AccountName { get; set; }
-            public string Domain { get; set; }
             public DateTime CreatedOn { get; set; }
 
         }
@@ -57,16 +56,14 @@ namespace TournamentTracker.Infrastructure.Queries.Users
             {
                 var items = await _readContext.UserAccounts
                     .Where(x => x.UserId == request.UserId && !x.IsDeleted)
-                    .Join(_readContext.Accounts, userAccount => userAccount.AccountId, account => account.Id, (userAccount, account) => new
+                    .Join(_readContext.Accounts, userAccount => userAccount.AccountId, account => account.Id, (userAccount, account) => new Model
                     {
-                        userAccount.UserId,
-                        userAccount.Id,
-                        userAccount.AccountId,
+                        UserId = userAccount.UserId,
+                        Id = userAccount.Id,
+                        AccountId = userAccount.AccountId,
                         AccountName = account.Name,
-                        account.Domain,
-                        userAccount.CreatedOn
+                        CreatedOn = userAccount.CreatedOn.Value
                     })
-                    .ProjectTo<Model>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken: cancellationToken);
 
                 return new Result(items);

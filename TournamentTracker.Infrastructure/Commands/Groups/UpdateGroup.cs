@@ -66,7 +66,7 @@ namespace TournamentTracker.Infrastructure.Commands.Groups
 
                 if (_readWriteContext.Groups.Any(x => x.Id != request.Id
                                                      && x.AccountId == request.AccountId
-                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.Name.ToLower() == request.Name.ToLower()))
                 {
                     return new Result("Group already exists");
                 }

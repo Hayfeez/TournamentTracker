@@ -81,7 +81,7 @@ namespace TournamentTracker.Infrastructure.Commands.Tournaments
             {
 
                 if (_readWriteContext.Teams.Any(x => x.AccountId == request.AccountId 
-                                                     && string.Equals(x.Name, request.Name, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.Name.ToLower() == request.Name.ToLower()))
                 {
                     return new Result("Tournament name already exists");
                 }

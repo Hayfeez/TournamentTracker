@@ -76,7 +76,9 @@ namespace TournamentTracker.Infrastructure.Commands.Users
                     {
                         AccountId = request.AccountId,
                         Id = SequentialGuid.Create(),
-                        UserId = userId
+                        UserId = userId,
+                        IsPending = true,
+                        CreatedOn = DateTime.Now
                     });
                 }
 

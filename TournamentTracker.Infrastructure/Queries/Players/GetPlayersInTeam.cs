@@ -42,6 +42,7 @@ namespace TournamentTracker.Infrastructure.Queries.Players
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public string PlayerNo { get; set; }
+            public bool IsCaptain { get; set; }
 
         }
 
@@ -65,6 +66,7 @@ namespace TournamentTracker.Infrastructure.Queries.Players
                         teamPlayer.Id,
                         teamPlayer.PlayerId,
                         teamPlayer.TeamId,
+                        teamPlayer.IsCaptain,
                         player.FirstName,
                         player.LastName,
                         player.PlayerNo
@@ -77,7 +79,8 @@ namespace TournamentTracker.Infrastructure.Queries.Players
                         teamPlayer.PlayerId,
                         teamPlayer.FirstName,
                         teamPlayer.LastName,
-                        teamPlayer.PlayerNo
+                        teamPlayer.PlayerNo,
+                        teamPlayer.IsCaptain
                     })
                     .Select(x => new Model
                     {
@@ -87,7 +90,8 @@ namespace TournamentTracker.Infrastructure.Queries.Players
                         Id = x.TeamPlayerId,
                         PlayerId = x.PlayerId,
                         TeamId = x.TeamId,
-                        TeamName = x.TeamName
+                        TeamName = x.TeamName,
+                        IsCaptain = x.IsCaptain
                     })
                    .ToListAsync(cancellationToken: cancellationToken);
 

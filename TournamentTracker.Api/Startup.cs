@@ -83,13 +83,13 @@ namespace TournamentTracker.Api
             services.AddScoped<IRandomizeHelper, RandomizeHelper>();
             services.AddMediatR(assembly);
 
-            //services.AddControllers().AddNewtonsoftJson(options =>
-            //{
-            //    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            //    options.SerializerSettings.Converters.Add(new TrimConverter());
-            //});
-            services.AddControllers().AddNewtonsoftJson();
+                options.SerializerSettings.Converters.Add(new TrimConverter());
+            });
+           // services.AddControllers().AddNewtonsoftJson();
 
             services.AddOpenApiDocument(config =>
             {
@@ -123,8 +123,8 @@ namespace TournamentTracker.Api
 
                 };
 
-                config.OperationProcessors.Insert(0, new AddRequiredHeaderParameter(Configuration));
-                config.DocumentProcessors.Insert(0, new JsonIgnoreDocumentProcessor());
+             //   config.OperationProcessors.Insert(0, new AddRequiredHeaderParameterOperationProcessor(Configuration));
+                config.DocumentProcessors.Insert(0, new AddRequiredHeaderParameterDocumentProcessor(Configuration));
             });
         }
 

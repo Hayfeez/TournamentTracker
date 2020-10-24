@@ -35,7 +35,6 @@ namespace TournamentTracker.Infrastructure.Queries.Teams
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
-            public string Captain { get; set; }
             public DateTime CreatedOn { get; set; }
 
         }
@@ -55,18 +54,11 @@ namespace TournamentTracker.Infrastructure.Queries.Teams
             {
                 var items = await _readContext.Teams
                     .Where(x => x.AccountId == request.AccountId && !x.IsDeleted)
-                    .Join(_readContext.Players, team => team.TeamCaptain, player => player.Id, (team, player) => new
-                    {
-                        team,
-                        player.FirstName,
-                        player.LastName
-                    })
                     .Select(x => new Model
                     {
-                        Captain = x.LastName + ", " + x.FirstName,
-                        CreatedOn = x.team.CreatedOn.Value,
-                        Name = x.team.Name,
-                        Id = x.team.Id
+                        CreatedOn = x.CreatedOn.Value,
+                        Name = x.Name,
+                        Id = x.Id
                     })
                    .ToListAsync(cancellationToken: cancellationToken);
 

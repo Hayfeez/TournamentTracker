@@ -75,16 +75,19 @@ namespace TournamentTracker.Api.Controllers
             return Respond(result);
         }
 
-        //[HttpDelete("{id}")]
-        //[ValidateModel]
-        //public async Task<IActionResult> DeleteGroup([FromBody] DeleteCommand.Request request, Guid id)
-        //{
-        //    request.Id = id;
-        //    request.AccountId = AccountId.GetValueOrDefault();
-        //    request.ActionBy = UserId.GetValueOrDefault();
+        [HttpDelete("{id}")]
+        [ValidateModel]
+        public async Task<IActionResult> DeleteGroup(Guid id)
+        {
+            var request = new DeleteGroup.Request
+            {
+                Id = id,
+                AccountId = AccountId.GetValueOrDefault(),
+                ActionBy = UserId.GetValueOrDefault(),
+            };
 
-        //    var result = await Mediator.Send(request);
-        //    return Respond(result);
-        //}
+            var result = await Mediator.Send(request);
+            return Respond(result);
+        }
     }
 }

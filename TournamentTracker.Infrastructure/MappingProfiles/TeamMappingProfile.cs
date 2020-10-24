@@ -17,9 +17,11 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
         public TeamMappingProfile()
         {
             CreateMap<CreateTeam.Request, Team>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(x => DateTime.Now));
 
-            CreateMap<UpdateTeam.Request, Team>(MemberList.Source);
+            CreateMap<UpdateTeam.Request, Team>(MemberList.Source)
+                .ForMember(dest => dest.ModifiedOn, opt => opt.MapFrom(x => DateTime.Now));
 
         }
 

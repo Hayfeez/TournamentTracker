@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 
 using TournamentTracker.Data.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace TournamentTracker.Data.Contexts
 {
@@ -45,9 +47,27 @@ namespace TournamentTracker.Data.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=192.168.0.137;Initial Catalog=TournamentTrackerDb;User Id=tournamentLogin;Password=Password@123");
+
+            // Get environment
+            //var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            //// Build config
+            //IConfiguration config = new ConfigurationBuilder()
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            //    .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            //    .AddEnvironmentVariables()
+            //    .Build();
+
+            //// Get connection string
+            //var connectionString = config.GetConnectionString("TournamentTrackerReadWriteContext");
+
+         //   optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("TournamentTracker.Data"));
+         //   optionsBuilder.UseSqlServer(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

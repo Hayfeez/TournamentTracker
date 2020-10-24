@@ -72,7 +72,7 @@ namespace TournamentTracker.Infrastructure.Commands.Players
 
                 if (_readWriteContext.Players.Any(x => x.Id != request.Id
                                                      && x.AccountId == request.AccountId
-                                                     && string.Equals(x.PlayerNo, request.PlayerNo, StringComparison.CurrentCultureIgnoreCase)))
+                                                     && x.PlayerNo.ToLower() == request.PlayerNo.ToLower()))
                 {
                     return new Result("Player with this number already exists");
                 }

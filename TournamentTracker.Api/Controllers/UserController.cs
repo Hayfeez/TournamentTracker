@@ -58,19 +58,6 @@ namespace TournamentTracker.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("account/{id}")]
-        [ValidateModel]
-        public async Task<IActionResult> GetUserAccount(Guid id)
-        {
-            var query = new GetUserAccountById.Query
-            {
-                Id = id  //AccountId.GetValueOrDefault()
-            };
-
-            var result = await Mediator.Send(query);
-            return Ok(result);
-        }
-
         [HttpGet("not-in-account")]
         [ValidateModel]
         public async Task<IActionResult> GetUsersNotInAccount()
