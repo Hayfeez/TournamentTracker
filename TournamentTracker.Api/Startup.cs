@@ -25,11 +25,14 @@ using NSwag.AspNetCore;
 
 using MediatR;
 
+using Newtonsoft.Json.Serialization;
 
 using TournamentTracker.Api.ErrorLogger;
 using TournamentTracker.Api.Filters;
 using TournamentTracker.Api.Middleware;
+using TournamentTracker.Common.Converters;
 using TournamentTracker.Data.Contexts;
+using TournamentTracker.Infrastructure.Helpers;
 
 namespace TournamentTracker.Api
 {
@@ -76,10 +79,17 @@ namespace TournamentTracker.Api
 
             // services.AddMediatR(Assembly.GetExecutingAssembly());
             //services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(ICustomerNameUpdateService).Assembly);
-           
+
+            services.AddScoped<IRandomizeHelper, RandomizeHelper>();
             services.AddMediatR(assembly);
 
-            services.AddControllers();
+            //services.AddControllers().AddNewtonsoftJson(options =>
+            //{
+            //    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            //    options.SerializerSettings.Converters.Add(new TrimConverter());
+            //});
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddOpenApiDocument(config =>
             {

@@ -32,11 +32,14 @@ namespace TournamentTracker.Data.Contexts
 
         public DbSet<Tournament> Tournaments { get; set; }
 
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<TournamentGroup> TournamentGroups { get; set; }
         public DbSet<TournamentTeam> TournamentTeams { get; set; }
+        public DbSet<TournamentTeamGroup> TeamGroups { get; set; }
 
         public DbSet<TournamentPrize> TournamentPrizes { get; set; }
 
-        public DbSet<TournamentStat> TournamentStats { get; set; }
+        public DbSet<FixtureStat> TournamentStats { get; set; }
 
         public DbSet<TournamentRound> TournamentRounds { get; set; }
         public DbSet<User> Users { get; set; }
@@ -49,19 +52,24 @@ namespace TournamentTracker.Data.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Account>().ToTable("Account");
-            modelBuilder.Entity<Fixture>().ToTable("Fixture");
-            modelBuilder.Entity<FixtureEntry>().ToTable("FixtureEntry");
+            modelBuilder.Entity<Group>().ToTable("Group");
             modelBuilder.Entity<Player>().ToTable("Player");
             modelBuilder.Entity<Team>().ToTable("Team");
-            modelBuilder.Entity<TeamPlayer>().ToTable("TeamPlayer");
             modelBuilder.Entity<Tournament>().ToTable("Tournament");
-            modelBuilder.Entity<TournamentRound>().ToTable("TournamentRound");
+
+            modelBuilder.Entity<TeamPlayer>().ToTable("TeamPlayer");
+            modelBuilder.Entity<UserAccount>().ToTable("UserAccount");
+            modelBuilder.Entity<TournamentGroup>().ToTable("TournamentGroup");
             modelBuilder.Entity<TournamentTeam>().ToTable("TournamentTeam");
             modelBuilder.Entity<TournamentPrize>().ToTable("TournamentPrize");
-            modelBuilder.Entity<TournamentStat>().ToTable("TournamentStat");
-            modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<UserAccount>().ToTable("UserAccount");
+
+            modelBuilder.Entity<TournamentTeamGroup>().ToTable("TournamentTeamGroup");
+            modelBuilder.Entity<TournamentRound>().ToTable("TournamentRound");
+            modelBuilder.Entity<Fixture>().ToTable("Fixture");
+            modelBuilder.Entity<FixtureEntry>().ToTable("FixtureEntry");
+            modelBuilder.Entity<FixtureStat>().ToTable("FixtureStat");
         }
     }
 }

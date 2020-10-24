@@ -9,11 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using TournamentTracker.Api.ErrorLogger;
 using TournamentTracker.Api.Filters;
-using TournamentTracker.Infrastructure.Commands;
-using TournamentTracker.Infrastructure.Commands.Accounts;
-using TournamentTracker.Infrastructure.Commands.Players;
 using TournamentTracker.Infrastructure.Commands.Users;
-using TournamentTracker.Infrastructure.Queries.Players;
 using TournamentTracker.Infrastructure.Queries.Users;
 
 namespace TournamentTracker.Api.Controllers
@@ -27,50 +23,62 @@ namespace TournamentTracker.Api.Controllers
         {
         }
 
-        //[HttpGet("")]
-        //[ValidateModel]
-        //public async Task<IActionResult> GetUsers([FromQuery] GetUsers.Query query)
-        //{
-        //    query.AccountId = AccountId.GetValueOrDefault();
-        //    var result = await Mediator.Send(query);
-        //    return Ok(result);
-        //}
+        [HttpGet("")]
+        [ValidateModel]
+        public async Task<IActionResult> GetUsers()
+        {
+            var query = new GetUsers.Query();
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
 
         [HttpGet("account")]
         [ValidateModel]
-        public async Task<IActionResult> GetUsersInAccount([FromQuery] GetUsersInAccount.Query query)
+        public async Task<IActionResult> GetUsersInAccount()
         {
-            query.AccountId = AccountId.GetValueOrDefault();
+            var query = new GetUsersInAccount.Query
+            {
+                AccountId = AccountId.GetValueOrDefault()
+            };
+
             var result = await Mediator.Send(query);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> GetUser([FromQuery] GetUserById.Query query, Guid id)
+        public async Task<IActionResult> GetUser(Guid id)
         {
-            query.Id = id;
+            var query = new GetUserById.Query
+            {
+                Id = id
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
         }
 
-        //[HttpGet("account/{id}")]
-        //[ValidateModel]
-        //public async Task<IActionResult> GetUser([FromQuery] GetUserAccountById.Query query, Guid id)
-        //{
-        //    query.AccountId = AccountId.GetValueOrDefault();
-        //    query.Id = id;
+        [HttpGet("account/{id}")]
+        [ValidateModel]
+        public async Task<IActionResult> GetUserAccount(Guid id)
+        {
+            var query = new GetUserAccountById.Query
+            {
+                Id = id  //AccountId.GetValueOrDefault()
+            };
 
-        //    var result = await Mediator.Send(query);
-        //    return Ok(result);
-        //}
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
 
         [HttpGet("not-in-account")]
         [ValidateModel]
-        public async Task<IActionResult> GetUsersNotInAccount([FromQuery] GetUsersNotInAccount.Query query)
+        public async Task<IActionResult> GetUsersNotInAccount()
         {
-            query.AccountId = AccountId.GetValueOrDefault();
+            var query = new GetUsersNotInAccount.Query
+            {
+                AccountId = AccountId.GetValueOrDefault()
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
@@ -78,9 +86,12 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpGet("account/{userId}")]
         [ValidateModel]
-        public async Task<IActionResult> GetUsersAccounts([FromQuery] GetUsersAccounts.Query query, Guid userId)
+        public async Task<IActionResult> GetUsersAccounts(Guid userId)
         {
-            query.UserId = userId;
+            var query = new GetUsersAccounts.Query
+            {
+                UserId = userId
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
@@ -132,12 +143,16 @@ namespace TournamentTracker.Api.Controllers
         //    return Respond(result);
         //}
 
-        [HttpDelete("")]
+        [HttpDelete("{userId}")]
         [ValidateModel]
-        public async Task<IActionResult> RemoveUserFromAccount([FromBody] RemoveUserFromAccount.Request request)
+        public async Task<IActionResult> RemoveUserFromAccount(Guid userId)
         {
-            request.AccountId = AccountId.GetValueOrDefault();
-            request.ActionBy = UserId.GetValueOrDefault();
+            var request = new RemoveUserFromAccount.Request
+            {
+                UserId = userId,
+                AccountId = AccountId.GetValueOrDefault(),
+                ActionBy = UserId.GetValueOrDefault(),
+            };
 
             var result = await Mediator.Send(request);
             return Respond(result);

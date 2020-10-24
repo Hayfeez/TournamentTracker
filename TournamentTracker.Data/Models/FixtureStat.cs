@@ -5,7 +5,7 @@ using TournamentTracker.Data.Interfaces;
 
 namespace TournamentTracker.Data.Models
 {
-    public class TournamentStat : IEntity, IAccount, IDeletable
+    public class FixtureStat : IEntity, IAccount, IDeletable
     {
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }

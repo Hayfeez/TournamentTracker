@@ -21,9 +21,6 @@ namespace TournamentTracker.Infrastructure.Queries.Players
     {
         public class Query : IRequest<Result>
         {
-            [JsonIgnore]
-            public Guid UserId { get; set; }
-            [JsonIgnore]
             public Guid AccountId { get; set; }
 
             public Guid PlayerId { get; set; }

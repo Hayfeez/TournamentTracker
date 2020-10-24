@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 using TournamentTracker.Common.Helpers;
+using TournamentTracker.Data.Attributes;
 using TournamentTracker.Data.Contexts;
 using TournamentTracker.Infrastructure.BasicResults;
 
@@ -39,6 +40,11 @@ namespace TournamentTracker.Infrastructure.Commands.Tournaments
             public bool LowestScoreWins { get; set; }
 
             public decimal EntryFee { get; set; }
+
+            public bool HasGroupStage { get; set; }
+
+            [RequiredIf(nameof(HasGroupStage), true)]
+            public int TeamPerGroup { get; set; }
         }
 
         public class Result : BasicActionResult

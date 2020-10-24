@@ -27,13 +27,10 @@ namespace TournamentTracker.Infrastructure.Commands.Users
     {
         public class Request : IRequest<Result>
         {
-            [JsonIgnore]
             public Guid ActionBy { get; set; }
 
-            [JsonIgnore]
             public Guid AccountId { get; set; }
 
-            [Required]
             public Guid UserId { get; set; }
 
         }
