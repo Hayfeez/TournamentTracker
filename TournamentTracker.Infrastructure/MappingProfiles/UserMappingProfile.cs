@@ -24,13 +24,12 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
             CreateMap<UpdateUser.Request, Team>(MemberList.Source);
 
 
-            CreateMap<AssignUsersToAccount.Request, UserAccount>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
-
             CreateMap<CreateUser.Request, UserAccount>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<User, GetUserById.Model>();
+
+            CreateMap<User, GetUsers.Model>();
         }
 
     }

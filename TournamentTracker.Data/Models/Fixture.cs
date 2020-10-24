@@ -8,8 +8,15 @@ namespace TournamentTracker.Data.Models
     public class Fixture : IEntity, IAccount
     {
         public Guid Id { get; set; }
+
         public Guid AccountId { get; set; }
-        public Guid RoundId { get; set; }
+
+        public Guid TournamentId { get; set; }
+
+        public Guid? GroupId { get; set; }
+
+        public Guid? RoundId { get; set; }
+
         public Guid? Winner { get; set; }
     }
 }

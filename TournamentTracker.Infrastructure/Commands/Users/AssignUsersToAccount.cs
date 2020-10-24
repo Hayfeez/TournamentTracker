@@ -72,11 +72,12 @@ namespace TournamentTracker.Infrastructure.Commands.Users
                         continue;
                     }
 
-                    var toAdd = _mapper.Map<UserAccount>(request);
-                    toAdd.Id = SequentialGuid.Create();
-                    toAdd.UserId = userId;
-                   
-                    _readWriteContext.UserAccounts.Add(toAdd);
+                    _readWriteContext.UserAccounts.Add(new UserAccount
+                    {
+                        AccountId = request.AccountId,
+                        Id = SequentialGuid.Create(),
+                        UserId = userId
+                    });
                 }
 
                 return await _readWriteContext.SaveChangesAsync() > 0 ? new Result() : new Result(HttpStatusCode.BadRequest);

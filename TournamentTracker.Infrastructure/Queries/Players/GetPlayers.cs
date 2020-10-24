@@ -21,7 +21,6 @@ namespace TournamentTracker.Infrastructure.Queries.Players
     {
         public class Query : IRequest<Result>
         {
-            [JsonIgnore]
             public Guid AccountId { get; set; }
         }
 
@@ -55,7 +54,7 @@ namespace TournamentTracker.Infrastructure.Queries.Players
 
             public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var items = await _readContext.Teams
+                var items = await _readContext.Players
                     .Where(x => x.AccountId == request.AccountId && !x.IsDeleted)
                     .ProjectTo<Model>(_mapper.ConfigurationProvider)
                    .ToListAsync(cancellationToken: cancellationToken);

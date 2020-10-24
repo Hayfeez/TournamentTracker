@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using TournamentTracker.Api.ErrorLogger;
 using TournamentTracker.Api.Filters;
-using TournamentTracker.Infrastructure.Commands;
 using TournamentTracker.Infrastructure.Commands.Teams;
 using TournamentTracker.Infrastructure.Queries.Teams;
 
@@ -27,9 +26,12 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpGet("")]
         [ValidateModel]
-        public async Task<IActionResult> GetTeams([FromQuery] GetTeams.Query query)
+        public async Task<IActionResult> GetTeams()
         {
-            query.AccountId = AccountId.GetValueOrDefault();
+            var query = new GetTeams.Query
+            {
+                AccountId = AccountId.GetValueOrDefault()
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
@@ -37,10 +39,13 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpGet("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> GetTeam([FromQuery] GetTeamById.Query query, Guid id)
+        public async Task<IActionResult> GetTeam(Guid id)
         {
-            query.Id = id;
-            query.AccountId = AccountId.GetValueOrDefault();
+            var query = new GetTeamById.Query
+            {
+                Id = id,
+                AccountId = AccountId.GetValueOrDefault()
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
@@ -72,11 +77,14 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpDelete("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> DeleteTeam([FromBody] DeleteCommand.Request request, Guid id)
+        public async Task<IActionResult> DeleteTeam(Guid id)
         {
-            request.Id = id;
-            request.AccountId = AccountId.GetValueOrDefault();
-            request.ActionBy = UserId.GetValueOrDefault();
+            var request = new DeleteTeam.Request
+            {
+                Id = id,
+                AccountId = AccountId.GetValueOrDefault(),
+                ActionBy = UserId.GetValueOrDefault(),
+            };
 
             var result = await Mediator.Send(request);
             return Respond(result);

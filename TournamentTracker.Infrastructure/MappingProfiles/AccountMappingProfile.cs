@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 using TournamentTracker.Data.Models;
 using TournamentTracker.Infrastructure.Commands.Accounts;
+using TournamentTracker.Infrastructure.Queries.Users;
 
 namespace TournamentTracker.Infrastructure.MappingProfiles
 {
@@ -20,6 +21,8 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<UpdateAccount.Request, Team>(MemberList.Source);
+
+            CreateMap<Account, GetUserAccountById.Model>();
         }
 
     }

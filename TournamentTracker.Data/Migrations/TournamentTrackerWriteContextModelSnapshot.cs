@@ -57,7 +57,13 @@ namespace TournamentTracker.Data.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoundId")
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RoundId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("Winner")
@@ -89,6 +95,70 @@ namespace TournamentTracker.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FixtureEntry");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Data.Models.FixtureStat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FixtureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FixtureStat");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Data.Models.Group", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Group");
                 });
 
             modelBuilder.Entity("TournamentTracker.Data.Models.Player", b =>
@@ -208,6 +278,9 @@ namespace TournamentTracker.Data.Migrations
                     b.Property<decimal>("EntryFee")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("HasGroupStage")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -220,9 +293,32 @@ namespace TournamentTracker.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TeamPerGroup")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Tournament");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Data.Models.TournamentGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentGroup");
                 });
 
             modelBuilder.Entity("TournamentTracker.Data.Models.TournamentPrize", b =>
@@ -275,13 +371,13 @@ namespace TournamentTracker.Data.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("NoOfTeams")
-                        .HasColumnType("int");
-
                     b.Property<string>("Round")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoundRank")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamsInRound")
                         .HasColumnType("int");
 
                     b.Property<Guid>("TournamentId")
@@ -290,41 +386,6 @@ namespace TournamentTracker.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TournamentRound");
-                });
-
-            modelBuilder.Entity("TournamentTracker.Data.Models.TournamentStat", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("FixtureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TournamentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TournamentStat");
                 });
 
             modelBuilder.Entity("TournamentTracker.Data.Models.TournamentTeam", b =>
@@ -357,6 +418,29 @@ namespace TournamentTracker.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TournamentTeam");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Data.Models.TournamentTeamGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentTeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentTeamGroup");
                 });
 
             modelBuilder.Entity("TournamentTracker.Data.Models.User", b =>

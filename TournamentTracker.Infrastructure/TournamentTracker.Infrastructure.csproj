@@ -6,9 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Commands\Fixtures\" />
-    <Folder Include="Commands\Prizes\" />
     <Folder Include="Events\" />
-    <Folder Include="Queries\Prizes\" />
     <Folder Include="Queries\Fixtures\" />
   </ItemGroup>
 

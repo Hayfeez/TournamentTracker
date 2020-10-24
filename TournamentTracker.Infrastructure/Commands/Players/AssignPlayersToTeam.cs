@@ -33,7 +33,7 @@ namespace TournamentTracker.Infrastructure.Commands.Players
             [JsonIgnore]
             public Guid AccountId { get; set; }
 
-            [Required]
+            [JsonIgnore]
             public Guid TeamId { get; set; }
 
             [Required]

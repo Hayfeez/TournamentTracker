@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using TournamentTracker.Api.ErrorLogger;
 using TournamentTracker.Api.Filters;
-using TournamentTracker.Infrastructure.Commands;
 using TournamentTracker.Infrastructure.Commands.Players;
 using TournamentTracker.Infrastructure.Queries.Players;
 
@@ -26,41 +25,53 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpGet("")]
         [ValidateModel]
-        public async Task<IActionResult> GetPlayers([FromQuery] GetPlayers.Query query)
+        public async Task<IActionResult> GetPlayers()
         {
-            query.AccountId = AccountId.GetValueOrDefault();
+            var query = new GetPlayers.Query
+            {
+                AccountId = AccountId.GetValueOrDefault()
+            };
             var result = await Mediator.Send(query);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> GetPlayer([FromQuery] GetPlayerById.Query query, Guid id)
+        public async Task<IActionResult> GetPlayer(Guid id)
         {
-            query.AccountId = AccountId.GetValueOrDefault();
-            query.Id = id;
+            var query = new GetPlayerById.Query
+            {
+                AccountId = AccountId.GetValueOrDefault(),
+                Id = id
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
         }
 
-        [HttpGet("in-team")]
+        [HttpGet("in-team/{teamId}")]
         [ValidateModel]
-        public async Task<IActionResult> GetPlayersInTeam([FromQuery] GetPlayersInTeam.Query query, [FromQuery]Guid teamId)
+        public async Task<IActionResult> GetPlayersInTeam(Guid teamId)
         {
-            query.AccountId = AccountId.GetValueOrDefault();
-            query.TeamId = teamId;
+            var query = new GetPlayersInTeam.Query
+            {
+                AccountId = AccountId.GetValueOrDefault(),
+                TeamId = teamId
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
         }
 
-        [HttpGet("not-in-team")]
+        [HttpGet("not-in-team/{teamId}")]
         [ValidateModel]
-        public async Task<IActionResult> GetPlayersNotInTeam([FromQuery] GetPlayersNotInTeam.Query query, [FromQuery]Guid teamId)
+        public async Task<IActionResult> GetPlayersNotInTeam(Guid teamId)
         {
-            query.AccountId = AccountId.GetValueOrDefault();
-            query.TeamId = teamId;
+            var query = new GetPlayersNotInTeam.Query
+            {
+                AccountId = AccountId.GetValueOrDefault(),
+                TeamId = teamId
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
@@ -68,10 +79,13 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpGet("{playerId}/teams")]
         [ValidateModel]
-        public async Task<IActionResult> GetPlayersTeams([FromQuery] GetPlayersTeams.Query query, Guid playerId)
+        public async Task<IActionResult> GetPlayersTeams(Guid playerId)
         {
-            query.AccountId = AccountId.GetValueOrDefault();
-            query.PlayerId = playerId;
+            var query = new GetPlayersTeams.Query
+            {
+                AccountId = AccountId.GetValueOrDefault(),
+                PlayerId = playerId
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);
@@ -113,12 +127,17 @@ namespace TournamentTracker.Api.Controllers
             return Respond(result);
         }
 
-        [HttpDelete("")]
+        [HttpDelete("{playerId}/remove/{teamId}")]
         [ValidateModel]
-        public async Task<IActionResult> RemovePlayerFromTeam([FromBody] RemovePlayerFromTeam.Request request)
+        public async Task<IActionResult> RemovePlayerFromTeam(Guid teamId, Guid playerId)
         {
-            request.AccountId = AccountId.GetValueOrDefault();
-            request.ActionBy = UserId.GetValueOrDefault();
+            var request = new RemovePlayerFromTeam.Request
+            {
+                AccountId = AccountId.GetValueOrDefault(),
+                ActionBy = UserId.GetValueOrDefault(),
+                TeamId = teamId,
+                PlayerId = playerId
+            };
 
             var result = await Mediator.Send(request);
             return Respond(result);
@@ -126,12 +145,15 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpDelete("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> DeletePlayer([FromBody] DeleteCommand.Request request, Guid id)
+        public async Task<IActionResult> DeletePlayer(Guid id)
         {
-            request.Id = id;
-            request.AccountId = AccountId.GetValueOrDefault();
-            request.ActionBy = UserId.GetValueOrDefault();
-
+            var request = new DeletePlayer.Request
+            {
+                Id = id,
+                AccountId = AccountId.GetValueOrDefault(),
+                ActionBy = UserId.GetValueOrDefault(),
+            };
+          
             var result = await Mediator.Send(request);
             return Respond(result);
         }

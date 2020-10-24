@@ -9,10 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using TournamentTracker.Api.ErrorLogger;
 using TournamentTracker.Api.Filters;
-using TournamentTracker.Infrastructure.Commands;
 using TournamentTracker.Infrastructure.Commands.Accounts;
 using TournamentTracker.Infrastructure.Queries.Accounts;
-using TournamentTracker.Infrastructure.Queries.Teams;
 
 namespace TournamentTracker.Api.Controllers
 {
@@ -27,17 +25,20 @@ namespace TournamentTracker.Api.Controllers
 
         [HttpGet("")]
         [ValidateModel]
-        public async Task<IActionResult> GetAccounts([FromQuery] GetAccounts.Query query)
+        public async Task<IActionResult> GetAccounts()
         {
-            var result = await Mediator.Send(query);
+            var result = await Mediator.Send(new GetAccounts.Query());
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         [ValidateModel]
-        public async Task<IActionResult> GetAccount([FromQuery] GetAccountById.Query query, Guid id)
+        public async Task<IActionResult> GetAccount(Guid id)
         {
-            query.Id = id;
+            var query = new GetAccountById.Query
+            {
+                Id = id
+            };
 
             var result = await Mediator.Send(query);
             return Ok(result);

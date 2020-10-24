@@ -12,6 +12,6 @@ namespace TournamentTracker.Data.Models
         public Guid TournamentId { get; set; }
         public string Round { get; set; }
         public int RoundRank { get; set; }
-        public int NoOfTeams { get; set; }
+        public int TeamsInRound { get; set; }
     }
 }

@@ -23,6 +23,21 @@ namespace TournamentTracker.Infrastructure.MappingProfiles
             CreateMap<UpdateTournament.Request, Tournament>(MemberList.Source);
 
             CreateMap<Tournament, GetTournaments.Model>();
+            CreateMap<Tournament, GetTournamentById.Model>();
+
+
+            CreateMap<TournamentPrize, GetTournamentPrizes.Model>();
+            CreateMap<TournamentPrize, GetTournamentPrizeById.Model>();
+
+            CreateMap<TournamentGroup, GetTournamentGroups.Model>();
+            CreateMap<TournamentGroup, GetTournamentGroupById.Model>();
+
+            CreateMap<TournamentTeam, GetTournamentTeams.Model>();
+            CreateMap<TournamentTeam, GetTournamentTeamById.Model>();
+
+            CreateMap<TournamentTeamGroup, GetTournamentTeamGroups.Model>();
+
+            CreateMap<TournamentRound, GetTournamentRounds.Model>();
         }
 
     }
