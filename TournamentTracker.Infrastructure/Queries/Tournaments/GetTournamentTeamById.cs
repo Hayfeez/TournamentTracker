@@ -38,10 +38,11 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
         public class Model
         {
             public Guid Id { get; set; }
+
             public Guid TournamentId { get; set; }
 
             public string TeamName { get; set; }
-            public string TeamCaptain { get; set; }
+
         }
 
         public class Handler : IRequestHandler<Query, Result>
@@ -64,22 +65,10 @@ namespace TournamentTracker.Infrastructure.Queries.Tournaments
                         tournamentTeam.Id,
                         tournamentTeam.TournamentId,
                         team.Name,
-                        team.AccountId,
-                        team.TeamCaptain
-                    })
-                    .Join(_readContext.Players, team => team.TeamCaptain, player => player.Id, (team, player) => new
-                    {
-                        team.Id,
-                        team.TournamentId,
-                        team.Name,
-                        player.AccountId,
-                        player.FirstName,
-                        player.LastName,
-                        player.PlayerNo
+                        team.AccountId
                     })
                     .Select(x => new Model
                     {
-                        TeamCaptain = x.FirstName + " " + x.LastName + " (" + x.PlayerNo + ")",
                         TeamName = x.Name,
                         Id = x.Id,
                         TournamentId = x.TournamentId

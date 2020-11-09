@@ -21,7 +21,6 @@ namespace TournamentTracker.Infrastructure.Queries.Users
     {
         public class Query : IRequest<Result>
         {
-
         }
 
         public class Result : List<Model>
