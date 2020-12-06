@@ -30,8 +30,8 @@ namespace TournamentTracker.Api
         Task<Guid> GetAccountId();
     }
 
-    [AccountScopeFilter]
     [UserAuthorizationFilter]
+ //   [AccountScopeFilter]
     public class CustomControllerBase : ControllerBase, ICustomControllerBase
     {
         private Guid _userAccountId;

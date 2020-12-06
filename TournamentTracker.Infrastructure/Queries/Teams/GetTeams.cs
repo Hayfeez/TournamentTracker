@@ -60,6 +60,7 @@ namespace TournamentTracker.Infrastructure.Queries.Teams
                         Name = x.Name,
                         Id = x.Id
                     })
+                    .OrderBy(x=>x.Name)
                    .ToListAsync(cancellationToken: cancellationToken);
 
                 return new Result(items);

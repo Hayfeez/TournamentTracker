@@ -54,6 +54,7 @@ namespace TournamentTracker.Infrastructure.Queries.Groups
                 var items = await _readContext.Groups
                     .Where(x => x.AccountId == request.AccountId && !x.IsDeleted)
                     .ProjectTo<Model>(_mapper.ConfigurationProvider)
+                    .OrderBy(x=>x.Name)
                    .ToListAsync(cancellationToken: cancellationToken);
 
                 return new Result(items);

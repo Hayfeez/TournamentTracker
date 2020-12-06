@@ -83,7 +83,7 @@ namespace TournamentTracker.Api
             services.AddScoped<IRandomizeHelper, RandomizeHelper>();
             services.AddMediatR(assembly);
 
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(x=>x.Filters.Add(new UserAuthorizationFilter())).AddNewtonsoftJson(options =>
             {
                 //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
